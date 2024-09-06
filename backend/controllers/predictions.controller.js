@@ -13,7 +13,9 @@ export const uploadAndPredict = async (req, res) => {
 			soil_N,
 			soil_K,
 			soil_P,
-			soil_pH
+			soil_pH,
+			temp,
+			hum
 		} = req.body;
 
 		const newPrediction = new Prediction({
@@ -28,6 +30,8 @@ export const uploadAndPredict = async (req, res) => {
 			soil_K,
 			soil_P,
 			soil_pH,
+			temp,
+			hum,
 			disease: "Lol",
 			recomm: ["pesti1", "pesti2"]
 		});
