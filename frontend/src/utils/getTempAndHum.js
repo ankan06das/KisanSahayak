@@ -16,5 +16,5 @@ export const getTempAndHum = async () => {
     const avgTemp = tempVals.reduce((sum, temp) => sum + temp, 0) / tempVals.length;
     const avgHum = humVals.reduce((sum, hum) => sum + hum, 0) / humVals.length;
 
-    return ({avgTemp, avgHum});
+    return ({ avgTemp, avgHum });
 }

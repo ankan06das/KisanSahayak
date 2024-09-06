@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import fetchWeatherInfo from "../../utils/getLocationAndWeatherData";
+import { fetchWeatherInfo } from "../../utils/getLocationAndWeatherData";
 import RainfallChart from "../../components/analytics/RainfallChart";
+import SoilChart from "../../components/analytics/SoilChart";
 import { getTempAndHum } from "../../utils/getTempAndHum";
 
 const Dashboard = () => {
@@ -28,13 +29,20 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div>
+        <div className="p-4">
+            <h1 className="text-gray-800 font-bold text-3xl text-center mb-7">Regional Environmental Conditions Analysis</h1>
             {weatherData ? (
-                <div>
-                    <RainfallChart />
+                <div className="flex space-x-4">
+                    <div className="w-1/2">
+                        <RainfallChart data={weatherData} />
+                    </div>
+
+                    <div className="w-1/2">
+                        <SoilChart data={weatherData} />
+                    </div>
                 </div>
             ) : (
-                <h1>Loading...</h1>
+                <h1 className="text-center">Loading...</h1>
             )}
         </div>
     )
