@@ -15,6 +15,12 @@ const PredictionSchema = new mongoose.Schema({
         max: 50,
         required: true
     },
+    crop: {
+        type: String,
+        min: 4,
+        max: 20,
+        required: true
+    },
     rainAct: {
         type: Number,
         required: true,
@@ -55,11 +61,21 @@ const PredictionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    disease_details: {
+        type: Array,
+        default: [],
+        required: true
+    },
     recomm: {
         type: Array,
         default: [],
         required: true
-    }
+    },
+    pesticides: {
+        type: Array,
+        default: [],
+        required: true
+    },
 }, { timestamps: true });
 
 const Prediction = mongoose.model("Prediction", PredictionSchema);

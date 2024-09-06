@@ -6,6 +6,7 @@ import predict as pd
 import json
 
 class Image(BaseModel):
+    userId: str
     url: str
     location: str
     rainAct: float
@@ -15,6 +16,8 @@ class Image(BaseModel):
     soil_P: float
     soil_K: float
     soil_pH: float
+    temp: float
+    hum: float
 
 app = FastAPI()
 
@@ -34,10 +37,13 @@ async def getPrediction (req: Image):
     pd.download_image(req.url, save_as='./temp.jpg')
     crop, attribute = pd.predict_class('./temp.jpg')
     recomms_dict = json.load(open("./recommendations.json"))
+    print(crop,attribute)
     dict_key = crop + "___" + attribute
     return {
+        "userId":req.userId,
         "url":req.url,
         "location":req.location,
+        "crop": crop,
         "rainAct":req.rainAct,
         "rainNorm":req.rainNorm,
         "rainDep":req.rainDep,
@@ -45,10 +51,11 @@ async def getPrediction (req: Image):
         "soil_K":req.soil_K,
         "soil_P":req.soil_P,
         "soil_pH":req.soil_pH,
-        "crop": crop,
+        "temp":req.temp,
+        "hum":req.hum,
         "disease": attribute,
-        "disease_details": recomms_dict[dict_key]["disease_details"] if attribute != "Healthy" else None,
-        "recommendations": recomms_dict[dict_key]["recommendations"] if attribute != "Healthy" else None,
-        "pesticides": recomms_dict[dict_key]    ["pesticides"] if attribute != "Healthy" else None
+        "disease_details": recomms_dict[dict_key]["disease_details"] if attribute != "Healthy" else [],
+        "recomm": recomms_dict[dict_key]["recommendations"] if attribute != "Healthy" else [],
+        "pesticides": recomms_dict[dict_key]    ["pesticides"] if attribute != "Healthy" else []
     }
  
