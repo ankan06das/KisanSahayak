@@ -63,7 +63,7 @@ const Camera = () => {
                         <div>
                             <img src={url} alt="Screenshot" />
                             <button onClick={handlePredictions} disabled={loading} className="primary-button-new">Predict</button>
-                            {data && <Predictions />}
+                            {data && <Predictions data={data} />}
                         </div>
                     )}
                 </div>

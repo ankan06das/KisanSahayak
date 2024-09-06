@@ -1,6 +1,6 @@
 import React from "react";
 
-function Predictions() {
+function Predictions(data) {
   return (
       <>
         <div className="work-section-info">
