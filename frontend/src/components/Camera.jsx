@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary";
+import useGetPredictions from "../hooks/useGetPredictions";
 
 const videoConstraints = {
     width: 540,
@@ -9,17 +11,29 @@ const videoConstraints = {
 const Camera = () => {
     const webcamRef = useRef(null);
     const [url, setUrl] = useState(null);
+    const [uploading, setUpLoading] = useState(false);
+    const {loading, getPredictions} = useGetPredictions();
 
     const capturePhoto = useCallback(async () => {
         const imageSrc = await webcamRef.current.getScreenshot();
-        setUrl(imageSrc);
-        console.dir({ imageSrc });
+
+        setUpLoading(true);
+        const publicUrl = await uploadToCloudinary(imageSrc);
+        setUrl(publicUrl);
+        setUpLoading(false);
+
+        console.dir({ publicUrl });
         //capture();
     }, [webcamRef]);
 
     const onUserMedia = (e) => {
         console.log(e);
     };
+
+    const handlePredictions = async () => {
+        const data = await getPredictions(url);
+        console.log(data);
+    }
 
     return (
         <>
@@ -32,10 +46,13 @@ const Camera = () => {
                 mirrored={true}
             />
             <br />
-            <button onClick={capturePhoto}>Capture</button>
+            <button onClick={capturePhoto} disabled={uploading}>
+                {loading ? "Uploading..." : "Capture"}
+            </button>
             <button onClick={() => {
                 setUrl(null);
             }}>Refresh</button>
+            <button onClick={handlePredictions}>Predict</button>
 
             {url && (
                 <div>

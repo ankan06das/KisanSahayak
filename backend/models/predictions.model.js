@@ -15,12 +15,6 @@ const PredictionSchema = new mongoose.Schema({
         max: 50,
         required: true
     },
-    crop: {
-        type: String,
-        min: 4,
-        max: 20,
-        required: true
-    },
     rainAct: {
         type: Number,
         required: true,
