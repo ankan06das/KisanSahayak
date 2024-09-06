@@ -13,7 +13,7 @@ const Welcome = () => {
 
       <div className="home-banner-container">
         <div className="home-text-section">
-          <h1 className="primary-heading">
+          <h1 className="primary-heading" translate="no">
             <Typewriter
               options={{
                 autoStart: true,

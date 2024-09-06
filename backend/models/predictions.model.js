@@ -49,15 +49,33 @@ const PredictionSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    temp: {
+        type: Number,
+        required: true
+    },
+    hum: {
+        type: Number,
+        requited: true
+    },
     disease: {
         type: String,
+        required: true
+    },
+    disease_details: {
+        type: Array,
+        default: [],
         required: true
     },
     recomm: {
         type: Array,
         default: [],
         required: true
-    }
+    },
+    pesticides: {
+        type: Array,
+        default: [],
+        required: true
+    },
 }, { timestamps: true });
 
 const Prediction = mongoose.model("Prediction", PredictionSchema);

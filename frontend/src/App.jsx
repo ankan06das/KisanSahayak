@@ -7,14 +7,19 @@ import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext";
 import Upload from "./pages/upload/Upload";
 import Capture from "./pages/upload/Capture";
-import fetchWeatherInfo from "./utils/getLocationAndWeatherData";
+//import fetchWeatherInfo from "./utils/getLocationAndWeatherData";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MarketPlace from "./pages/marketplace/Marketplace"
+import useGetPredictions from "./hooks/useGetPredictions";
+import { useEffect } from "react";
 
 function App() {
   const { authUser } = useAuthContext();
   console.log(authUser);
-
+  const {loading , getPredictions} = useGetPredictions();
+  useEffect(() => {
+    getPredictions();
+  }, []);
   return (
     <>
       <div>

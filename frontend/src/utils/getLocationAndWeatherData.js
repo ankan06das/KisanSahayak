@@ -13,7 +13,7 @@ const getLocationAndWeather = async () => {
     }
 }
 
-const fetchIPInfo = async () => {
+export const fetchIPInfo = async () => {
     try {
         const ip = await getLocationAndWeather();
         if (!ip) {
@@ -22,26 +22,27 @@ const fetchIPInfo = async () => {
 
         const res = await fetch(`http://ip-api.com/json/${ip}`);
         const data = await res.json();
-        return data.city;
+        console.log(data);
+        return data;
     } catch (error) {
         toast.error(error.message);
         console.log("Failed to fetch location");
     }
 }
 
-const fetchWeatherInfo = async () => {
+export const fetchWeatherInfo = async () => {
     try {
         const district = await fetchIPInfo();
         
-        if (district) {
+        if (district.city) {
             const matchedDistrict = env_data.find(
-                (data) => data.District.toUpperCase() === district.toUpperCase()
+                (data) => data.District.toUpperCase() === district.city.toUpperCase()
             );
 
             if (matchedDistrict) {
                 return matchedDistrict;
             } else {
-                toast.error(`No data found for the district: ${district}`);
+                toast.error(`No data found for the district: ${district.city}`);
             }
         } else {
             toast.error("Could not retrieve district name");
@@ -51,5 +52,3 @@ const fetchWeatherInfo = async () => {
         console.log("Failed to fetch weather info");
     }
 }
-
-export default fetchWeatherInfo;
