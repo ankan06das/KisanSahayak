@@ -19,6 +19,11 @@ const ProductSchema = new mongoose.Schema(
             ref: "User",
             required: true
         },
+        seller_name: {
+            type: String,
+            min: 2,
+            required: true
+        },
         seller_type: {
             type: String,
             required: true,
