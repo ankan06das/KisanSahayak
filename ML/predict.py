@@ -3,6 +3,7 @@ import base64
 import numpy as np
 import urllib
 import os
+import cv2
 
 cnn = tf.keras.models.load_model('./trained_model.h5')
 
@@ -68,4 +69,15 @@ def download_image(url, save_as):
 def get_crop_disease(data):
 	return tuple(data.split('___'))
 
+def get_best_img(img_list):
+	return img_list[np.argmax([compute_sharpness(img) for img in img_list])]
+
+def compute_sharpness(image_path):
+    print(image_path)
+    download_image(image_path, save_as='./temp.jpg')
+    image = cv2.imread('./temp.jpg')
+    print(type(image))
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)  # Convert image to grayscale
+    laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()  # Variance of Laplacian
+    return laplacian_var
 
