@@ -39,7 +39,7 @@ const Testimonial = () => {
   const TestimonialData = [
     {
       image: ProfilePic,
-      review: "Best Decision for My Paddy Fields!This website has been a blessing for my paddy farming. The disease predictions are incredibly accurate, and the advice is tailored to local conditions here in Andhra Pradesh. Thanks to this service, I caught a fungal infection early, and it saved my entire crop. Its a must-have tool for every Indian farmer! ",
+      review: "Best Decision for my Paddy Fields!This website has been a blessing for my paddy farming. The disease predictions are incredibly accurate, and the advice is tailored to local conditions here in Andhra Pradesh. Thanks to this service, I caught a fungal infection early, and it saved my entire crop. Its a must-have tool for every Indian farmer! ",
       stars: 
       <>
           <AiFillStar />
