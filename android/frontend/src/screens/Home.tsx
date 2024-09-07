@@ -3,13 +3,46 @@ import { Text, TouchableOpacity, View, Image, ScrollView } from 'react-native'
 import { Icon } from '@rneui/themed';
 import * as ImagePicker from "expo-image-picker";
 import tw from 'twrnc'
-import { selectUser } from '../../slices/userSlice';
-import { useSelector } from 'react-redux';
+import { selectUser, setPredictionData } from '../../slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Speech from "expo-speech"
+import { BarChart } from 'react-native-chart-kit';
+
+const data = {
+  labels: ["January", "February", "March", "April", "May", "June"],
+  datasets: [
+    {
+      data: [20, 45, 28, 80, 99, 43]
+    }
+  ]
+};
+
+const chartConfig = {
+  backgroundColor: "#3437eb",
+  backgroundGradientFrom: "#0088ff",
+  backgroundGradientFromOpacity: 1,
+  backgroundGradientTo: "#08130D",
+  backgroundGradientToOpacity: 1,
+  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  strokeWidth: 2, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: false // optional
+};
 
 const Home = () => {
   const [img, setImg] = useState('');
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   console.log(user);
+  const handleVoice = () => {
+    Speech.speak("भाईयों और बहनो, अच्छे दिन आ गए", {
+      language: "hi-IN",
+      pitch: 0.005,
+      volume: 10
+    });
+  }
+
+  const [predictionsData, setPredictionsData] = useState({});
   
   const sources = [
     {
@@ -89,6 +122,11 @@ const Home = () => {
   //   setImg(img);
   //   console.log(img);
   // }
+
+  const handlePredict = () => {
+    setPredictionsData(data);
+    dispatch(setPredictionData(data));
+  }
     return (
     <ScrollView>
       <View style={tw`flex-col`}>
@@ -178,7 +216,31 @@ const Home = () => {
             </Text>
           </View>
         </TouchableOpacity>
-        {img && <Image source={{uri: img}} style={tw`self-center h-70 w-70`}/>}
+        {img && <TouchableOpacity
+        onPress={handlePredict} style={tw`mb-2`}>
+          <View style={tw`h-15 w-70 bg-blue-500 shadow-md self-center`}>
+            <Text style={tw`text-xl text-white m-auto`}>
+              Predict
+            </Text>
+          </View>
+        </TouchableOpacity>}
+        {/* {img && <Image source={{uri: img}} style={tw`self-center h-70 w-70`}/>} */}
+        {Object.keys(predictionsData).length > 0 && <View style={tw`mt-18`}>
+                    <Text style={{alignSelf: 'center', fontFamily: "Poppins"}}>
+                        Annual Rainfall
+                    </Text>
+                    <BarChart
+                        style={{marginVertical: 8,
+                            }}
+                        data={data}
+                        width={400}
+                        height={220}
+                        yAxisLabel=""
+                        yAxisSuffix='mm'
+                        chartConfig={chartConfig}
+                        verticalLabelRotation={0}
+                        />
+                    </View>}
       </View>
       </ScrollView>
     )
