@@ -68,7 +68,7 @@ const Login = () => {
 
     const handleLogin = async () => {
       const loginForm = {phoneno: form.phoneno, password: form.password}
-      const loggedInResponse = await fetch("http://192.168.161.212:3001/auth/login", {
+      const loggedInResponse = await fetch("http://192.168.126.212:3001/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginForm),
