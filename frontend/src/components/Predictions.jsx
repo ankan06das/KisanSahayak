@@ -1,5 +1,3 @@
-import React from "react";
-
 function Predictions(data) {
   return (
       <>
@@ -7,6 +5,7 @@ function Predictions(data) {
             <p>Disease: </p>
             <p>Description:</p>
             <p>Recommendation:</p>
+            <p>Pesicides:</p>
         </div>
       </>
   );

@@ -16,6 +16,20 @@ const Camera = () => {
     const { loading, getPredictions } = useGetPredictions();
     const [data, setData] = useState(null);
 
+    const [imgUrl, setImgUrl] = useState(null);
+    const [captureData,setCaptureData] = useState([]);
+
+    const handleImageUpload=(imgUrl)=>{
+        captureData.push({url:imgUrl});
+        console.log(captureData);
+    }
+
+    const LoadPredictButton = ()=>{
+        if(captureData.length == 3){
+            return <PredictionsButton/>;
+        }
+    }
+
     const capturePhoto = useCallback(async () => {
         const imageSrc = await webcamRef.current.getScreenshot();
 
@@ -26,6 +40,8 @@ const Camera = () => {
 
         console.dir({ publicUrl });
         //capture();
+
+        handleImageUpload(publicUrl);        
     }, [webcamRef]);
 
     const onUserMedia = (e) => {
@@ -39,7 +55,7 @@ const Camera = () => {
 
     return (
         <>
-            <div className="upload-body" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="upload-body" style={{ display: "flex", flexDirection: "column"}}>
                 <Webcam
                     ref={webcamRef}
                     audio={false}
@@ -58,7 +74,7 @@ const Camera = () => {
                     }} className="primary-button-new">Refresh</button>
                 </div>
 
-                <div>
+                {/*<div>
                     {url && (
                         <div>
                             <img src={url} alt="Screenshot" />
@@ -66,7 +82,23 @@ const Camera = () => {
                             {data && <Predictions data={data} />}
                         </div>
                     )}
-                </div>
+                </div>*/}
+                    <section >
+                        {captureData.map((data, _idx)=>(
+                            <div className="uploaded-row" key={_idx}>
+                                <div className="content">
+                                        {url && (
+                                            <div>
+                                                <p>{data.url}</p>
+                                                <img src={data.url} alt="Screenshot" />
+                                            </div>
+                                        )}
+                                </div>
+                            </div>
+                        ))}
+                        {captureData.length === 3 && <button className="primary-button-new">Predict</button>}
+                        
+                    </section>
             </div>
         </>
     )
