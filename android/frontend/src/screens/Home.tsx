@@ -133,7 +133,7 @@ const Home = () => {
         <View style={tw`flex-row`}>
           {registeredCropsSource.map((crops) => {
               return (
-                <View>
+                <View style={tw`flex-col items-center`}>
             <TouchableOpacity
             style={{
               borderWidth:2,
@@ -149,7 +149,7 @@ const Home = () => {
             >
               <Image key={crops.name} source={crops.require} style={tw`h-10 w-10`}/>
             </TouchableOpacity>
-              <Text key={crops.name} style={tw`ml-4`}>
+              <Text key={crops.name}>
               {crops.name}
               </Text>
               </View>
