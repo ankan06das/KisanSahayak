@@ -66,19 +66,6 @@ const Camera = () => {
                     mirrored={true}
                     style={{ position: 'relative', zIndex: 1 }}
                 />
-                <div style={{
-                    position: 'absolute',
-                    top: '10%',
-                    left: '10%',
-                    right: '10%',
-                    bottom: '10%',
-                    zIndex: 2,
-                    border: '2px dashed green',
-                    borderRadius: '10px'
-                }}
-                >
-                    <p className="text-center text-green-700">Align the plant within ythe box</p>
-                </div>
                 <br />
                 <div>
                     <button onClick={capturePhoto} disabled={uploading} className="primary-button-new">
