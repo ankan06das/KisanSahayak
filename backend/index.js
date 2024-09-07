@@ -12,6 +12,7 @@ import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.routes.js";
 import predictionRoutes from "./routes/predictions.routes.js";
+import marketplaceRoutes from "./routes/marketplace.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +46,7 @@ app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 app.use("/predictions", predictionRoutes);
+app.use("/marketplace", marketplaceRoutes);
 
 const prices = [];
 
