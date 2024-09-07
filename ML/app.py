@@ -3,11 +3,12 @@ from pydantic import BaseModel
 import numpy as np
 from fastapi.middleware.cors import CORSMiddleware
 import predict as pd
+import analysis as al
 import json
 
 class Image(BaseModel):
-    userId: str
-    url: str
+    # userId: str
+    url: list
     location: str
     rainAct: float
     rainNorm: float
@@ -33,15 +34,17 @@ app.add_middleware(
     
 @app.post("/predict")
 async def getPrediction (req: Image):
-    print(req)
-    pd.download_image(req.url, save_as='./temp.jpg')
+    print("List: ",req.url)
+    best_img_url = pd.get_best_img(req.url);
+    print("test",best_img_url)
+    pd.download_image(best_img_url, save_as='./temp.jpg')
     crop, attribute = pd.predict_class('./temp.jpg')
     recomms_dict = json.load(open("./recommendations.json"))
     print(crop,attribute)
     dict_key = crop + "___" + attribute
     return {
         "userId":req.userId,
-        "url":req.url,
+        "url":best_img_url,
         "location":req.location,
         "crop": crop,
         "rainAct":req.rainAct,
@@ -58,4 +61,15 @@ async def getPrediction (req: Image):
         "recomm": recomms_dict[dict_key]["recommendations"] if attribute != "Healthy" else [],
         "pesticides": recomms_dict[dict_key]    ["pesticides"] if attribute != "Healthy" else []
     }
- 
+
+@app.post('/analysis')
+async def getAnalysis(req: Image):
+    return al.predict_and_save_to_json(
+        req.rainNorm,
+        req.soil_N,
+        req.soil_P,
+        req.soil_K,
+        req.soil_pH,
+        req.temp,
+        req.hum
+    )   
