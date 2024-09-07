@@ -1,6 +1,8 @@
 import React from 'react'
 import Camera from '../../components/Camera';
 import { Box, TextField } from '@mui/material';
+import ThreeInputForm from './ThreeInputForm.jsx';
+
 
 
 // const CssTextField = withStyles({
@@ -38,12 +40,13 @@ const MarketplaceSell = () => {
   return (
     <>
         <div style={{backgroundColor: "white"}}>
-            <Camera/>
-            <Box>
-            </Box>
+            
+            <ThreeInputForm/>
         </div>
     </>
   )
 }
 
 export default MarketplaceSell;
+//capture url
+//form -user price, his name, retailer or farmer 
