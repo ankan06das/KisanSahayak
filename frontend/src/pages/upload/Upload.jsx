@@ -3,6 +3,7 @@ import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import { uploadBlobToCloudinary } from "../../utils/uploadBlobToCloudinary.js";
 import useGetPredictions from "../../hooks/useGetPredictions.js";
+import Predictions from "../../components/Predictions.jsx";
 
 function Uploader() {
     const [image, setImage] = useState(null);
@@ -10,7 +11,8 @@ function Uploader() {
     const [blobData, setBlobData] = useState([]);
     const [uploadData, setUploadData] = useState([]);
     const [uploading, setUploading] = useState(false);
-    const {loading, getPredictions} = useGetPredictions();
+    const { loading, getPredictions } = useGetPredictions();
+    const [data, setData] = useState();
 
     const handleImageUpload = (filename, img) => {
         setUploadData(prevData => [
@@ -51,7 +53,10 @@ function Uploader() {
         setUploadData(uploadData.filter(el => el !== data));
     };
 
-    console.log(uploadData);
+    const handlePredictions = async () => {
+        const predData = await getPredictions(url);
+        setData(predData);
+    }
 
     return (
         <main className="upload-body">
@@ -81,7 +86,6 @@ function Uploader() {
                 {uploadData.map((data) => (
                     <div className="uploaded-row" key={data.name}>
                         <div className="content">
-                            <p>{data.name}</p>
                             <span>
                                 <MdDelete onClick={() => handleDeletion(data)} />
                             </span>
@@ -89,19 +93,22 @@ function Uploader() {
                         <img src={data.image} width={150} height={150} alt={data.name} />
                     </div>
                 ))}
-                <button onClick={handleBatchUpload} disabled={uploading} className="primary-button-new">
+                {uploadData.length === 3 && <button onClick={handleBatchUpload} disabled={uploading} className="primary-button-new">
                     {uploading ? "Uploading..." : "Upload"}
-                </button>
+                </button>}
                 {uploadData.length === 3 &&
                     <button
-                        className="button-primary-new"
-                        onClick={getPredictions}
+                        className="primary-button-new"
+                        onClick={handlePredictions}
                         disabled={loading}
                     >
                         Predict
                     </button>
                 }
             </section>
+            <div>
+                {data && <Predictions data={data} />}
+            </div>
         </main>
     );
 }
