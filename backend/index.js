@@ -13,6 +13,7 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.routes.js";
 import predictionRoutes from "./routes/predictions.routes.js";
 import marketplaceRoutes from "./routes/marketplace.routes.js";
+import elevatedUserRoutes from "./routes/elevatedUser.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,21 +48,22 @@ app.use(cookieParser());
 app.use("/auth", authRoutes);
 app.use("/predictions", predictionRoutes);
 app.use("/marketplace", marketplaceRoutes);
+app.use("/elevatedUser", elevatedUserRoutes);
 
 const prices = [];
 
-app.post("/", async(req, res) => {
+app.post("/", async (req, res) => {
     try {
         const price = req.body;
         prices.push(price);
         console.log(prices);
-        
+
     } catch (err) {
-        res.status(500).json({error: err.message});
+        res.status(500).json({ error: err.message });
     }
 })
 
-app.post("/pay", async(req, res) => {
+app.post("/pay", async (req, res) => {
     try {
         // const price = req.body;
         // prices.push(price);

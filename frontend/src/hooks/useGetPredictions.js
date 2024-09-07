@@ -5,7 +5,7 @@ import { getTempAndHum } from "../utils/getTempAndHum";
 
 const useGetPredictions = () => {
     const [loading, setLoading] = useState(false);
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;jzx
     const { authUser } = useAuthContext();
 
     const getPredictions = async (url) => {
