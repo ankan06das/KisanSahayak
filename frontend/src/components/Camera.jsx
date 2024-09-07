@@ -96,7 +96,7 @@ const Camera = () => {
                                 </div>
                             </div>
                         ))}
-                        {captureData.length === 3 && <button className="primary-button-new">Predict</button>}
+                        {captureData.length === 3 && <button className="primary-button-new" onClick={handlePredictions} disabled={loading}>Predict</button>}
                         
                     </section>
             </div>
