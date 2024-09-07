@@ -2,19 +2,19 @@ import React, { Component } from 'react'
 import { ImageBackground, ScrollView, Text, TouchableOpacity, View, Image, SafeAreaView } from 'react-native'
 import { useSelector } from 'react-redux'
 import tw from 'twrnc'
-import { selectUser } from '../../slices/userSlice'
+import { selectPredictionData, selectUser } from '../../slices/userSlice'
 import { useFonts } from 'expo-font'
 import { Icon } from '@rneui/themed'
 import { BarChart } from 'react-native-chart-kit'
 
-const data = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43]
-      }
-    ]
-  };
+// const data = {
+//     labels: ["January", "February", "March", "April", "May", "June"],
+//     datasets: [
+//       {
+//         data: [20, 45, 28, 80, 99, 43]
+//       }
+//     ]
+//   };
 
   const chartConfig = {
     backgroundColor: "#3437eb",
@@ -29,6 +29,9 @@ const data = {
   };
 
 const UserDashboard = () => {
+    const predictionData = useSelector(selectPredictionData);
+    console.log(predictionData);
+    
     const [loaded] = useFonts({
         Poppins: require("../../assets/fonts/Poppins/Poppins-Light.ttf"),
         PoppinsSemiBold: require("../../assets/fonts/Poppins/Poppins-SemiBold.ttf")
@@ -96,14 +99,14 @@ const UserDashboard = () => {
                         {/* <Icon name='pluscircleo' size={20} color="white" type='antdesign'/>
                         <Text style={tw`ml-2 text-white`}>Add crops</Text> */}
                     </View>
-                    <View style={tw`mt-18`}>
+                    {Object.keys(predictionData).length > 0 && <View style={tw`mt-18`}>
                     <Text style={{alignSelf: 'center', fontFamily: "Poppins"}}>
                         Annual Rainfall
                     </Text>
                     <BarChart
                         style={{marginVertical: 8,
                             }}
-                        data={data}
+                        data={predictionData}
                         width={400}
                         height={220}
                         yAxisLabel=""
@@ -111,7 +114,7 @@ const UserDashboard = () => {
                         chartConfig={chartConfig}
                         verticalLabelRotation={0}
                         />
-                    </View>
+                    </View>}
                 </View>
             </ScrollView>
         </View>

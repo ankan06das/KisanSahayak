@@ -50,7 +50,7 @@ const Login = () => {
     //     return <AppLoading/>
 
     const handleRegister = () => {
-      axios.post("192.168.126.212:3001/auth/register", form)
+      axios.post("http://192.168.161.212:3001/auth/register", form)
       .then(res => console.log(res))
       .catch(err => console.log(err)
       )

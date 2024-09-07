@@ -3,7 +3,8 @@ import BannerImage from "../assets/home-banner-image.png";
 import Typewriter from 'typewriter-effect';
 import { useAuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import useLogout from "../hooks/useLogout"
+import useLogout from "../hooks/useLogout";
+import Translate from "./TranslateComponent.jsx";
 
 const Layout = () => {
   const { authUser } = useAuthContext();
@@ -17,7 +18,7 @@ const Layout = () => {
           <img src={BannerBackground} alt="" />
         </div>
         <div className="home-text-section">
-          <h1 className="primary-heading">
+          <h1 className="primary-heading" translate="no">
             <Typewriter
               options={{
                 autoStart: true,
@@ -43,7 +44,6 @@ const Layout = () => {
             />
           </h1>
 
-          {authUser && <h1 className="flex items-center font-extrabold">{authUser.name}</h1>}
           <p className="primary-text">
             Keep your crops away from potential outbreaks and other problems
           </p>
@@ -56,6 +56,23 @@ const Layout = () => {
               <button className="primary-button">
                 <Link to="/login">Login</Link>
               </button>
+              <div
+                style={{
+                  width: "150px",
+                  height: "100px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  overflow: "hidden",
+                  alignItems: "center",
+                }}>
+                <div>
+                  <h1>Google Translate</h1>
+                  <div>
+                    <Translate />
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <button className="secondary-button" onClick={logout}>

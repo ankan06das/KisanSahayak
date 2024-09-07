@@ -7,10 +7,12 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import createOrder from "./services/paypal.js"
 import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.routes.js";
 import predictionRoutes from "./routes/predictions.routes.js";
+import marketplaceRoutes from "./routes/marketplace.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,8 +46,35 @@ app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 app.use("/predictions", predictionRoutes);
+app.use("/marketplace", marketplaceRoutes);
+
+const prices = [];
+
+app.post("/", async(req, res) => {
+    try {
+        const price = req.body;
+        prices.push(price);
+        console.log(prices);
+        
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+})
+
+app.post("/pay", async(req, res) => {
+    try {
+        // const price = req.body;
+        // prices.push(price);
+        const url = await createOrder();
+        res.redirect(url);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+})
 
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL).then(() => {
     app.listen(PORT, () => console.log(`Server PORT: ${PORT}`));
 }).catch((error) => console.log(`${error} did not connect`));
+
+export default prices;

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Typography, Box, useTheme, Grid, InputBase, IconButton } from '@mui/material'
+import { Typography, Box, useTheme, Grid, InputBase, IconButton, Button, TextField, } from '@mui/material'
 import { Phone, Mail } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import FarmequipmentsData from './FarmequipmentsData';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./market.css";
+import { setProductData } from '../../state/reducer';
 
 const FoodGalleryPage = () => {
     useEffect(() => {
@@ -41,6 +42,7 @@ const FoodGalleryPage = () => {
   }
 
   const redirectToExternalResource = url => window.location.href = url
+
   
   return (
     <Box marginTop={5}>
@@ -72,6 +74,16 @@ const FoodGalleryPage = () => {
             <IconButton>
                 <SearchIcon/>
             </IconButton>
+            <Button variant="contained" onClick={() => navigate("sell")} sx={{
+                            height: "40px",
+                            margin: "0.5rem",
+                            color: "#000",
+                            "&:hover": {
+                            backgroundColor: "#000"
+                        }
+                        }}>
+                SELL
+            </Button>
         </Box>
     {Pesticides.length > 0 && <Typography fontFamily="Poppins" fontSize="4rem" fontWeight="600" m={5} p={4}>
         Get your pesticides today
@@ -84,9 +96,10 @@ const FoodGalleryPage = () => {
                   return (
                       <Grid item xs={4}>
                       <Box color="black" 
-                      onClick={() =>
-                          redirectToExternalResource(item.url)
-                      }
+                      onClick={() => {
+                        dispatch(setProductData(item))
+                        navigate("buy")
+                      }}
                            height={700} bgcolor="rgb(255,255,255)" borderRadius={3} boxShadow="5px 10px 12px 1px black" className="itemcard" style={{cursor: "pointer"}}>
                           <img width="100%" src={item.src}/>
                           <Box width="90%" display="flex" justifyContent="space-between" marginLeft={1} color="black" style={{textShadow: "0px 0px 10px white"}}>

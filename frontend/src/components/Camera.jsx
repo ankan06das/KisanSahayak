@@ -1,7 +1,9 @@
 import { useCallback, useRef, useState } from "react";
+import { TextField, withStyles } from "@mui/material";
 import Webcam from "react-webcam";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary";
 import useGetPredictions from "../hooks/useGetPredictions";
+import Predictions from "../components/Predictions";
 
 const videoConstraints = {
     width: 540,
@@ -12,7 +14,22 @@ const Camera = () => {
     const webcamRef = useRef(null);
     const [url, setUrl] = useState(null);
     const [uploading, setUpLoading] = useState(false);
-    const {loading, getPredictions} = useGetPredictions();
+    const { loading, getPredictions } = useGetPredictions();
+    const [data, setData] = useState(null);
+
+    const [imgUrl, setImgUrl] = useState(null);
+    const [captureData, setCaptureData] = useState([]);
+
+    const handleImageUpload = (imgUrl) => {
+        captureData.push({ url: imgUrl });
+        console.log(captureData);
+    }
+
+    const LoadPredictButton = () => {
+        if (captureData.length == 3) {
+            return <PredictionsButton />;
+        }
+    }
 
     const capturePhoto = useCallback(async () => {
         const imageSrc = await webcamRef.current.getScreenshot();
@@ -24,6 +41,8 @@ const Camera = () => {
 
         console.dir({ publicUrl });
         //capture();
+
+        handleImageUpload(publicUrl);
     }, [webcamRef]);
 
     const onUserMedia = (e) => {
@@ -31,35 +50,71 @@ const Camera = () => {
     };
 
     const handlePredictions = async () => {
-        const data = await getPredictions(url);
-        console.log(data);
+        const predData = await getPredictions(url);
+        setData(predData);
     }
 
     return (
         <>
-            <Webcam
-                ref={webcamRef}
-                audio={false}
-                screenshotFormat="image/png"
-                videoConstraints={videoConstraints}
-                onUserMedia={onUserMedia}
-                mirrored={true}
-            />
-            <br />
-            <button onClick={capturePhoto} disabled={uploading}>
-                {loading ? "Uploading..." : "Capture"}
-            </button>
-            <button onClick={() => {
-                setUrl(null);
-            }}>Refresh</button>
-            <button onClick={handlePredictions}>Predict</button>
-
-            {url && (
-                <div>
-                    <p>{url}</p>
-                    <img src={url} alt="Screenshot" />
+            <div className="upload-body" style={{ display: "flex", flexDirection: "column" }}>
+                <Webcam
+                    ref={webcamRef}
+                    audio={false}
+                    screenshotFormat="image/png"
+                    videoConstraints={videoConstraints}
+                    onUserMedia={onUserMedia}
+                    mirrored={true}
+                    style={{ position: 'relative', zIndex: 1 }}
+                />
+                <div style={{
+                    position: 'absolute',
+                    top: '10%',
+                    left: '10%',
+                    right: '10%',
+                    bottom: '10%',
+                    zIndex: 2,
+                    border: '2px dashed green',
+                    borderRadius: '10px'
+                }}
+                >
+                    <p className="text-center text-green-700">Align the plant within ythe box</p>
                 </div>
-            )}
+                <br />
+                <div>
+                    <button onClick={capturePhoto} disabled={uploading} className="primary-button-new">
+                        {uploading ? "Uploading..." : "Capture"}
+                    </button>
+                    <button onClick={() => {
+                        setUrl(null);
+                    }} className="primary-button-new">Refresh</button>
+                </div>
+
+                {/*<div>
+                    {url && (
+                        <div>
+                            <img src={url} alt="Screenshot" />
+                            <button onClick={handlePredictions} disabled={loading} className="primary-button-new">Predict</button>
+                            {data && <Predictions data={data} />}
+                        </div>
+                    )}
+                </div>*/}
+                <section >
+                    {captureData.map((data, _idx) => (
+                        <div className="uploaded-row" key={_idx}>
+                            <div className="content">
+                                {url && (
+                                    <div>
+                                        <p>{data.url}</p>
+                                        <img src={data.url} alt="Screenshot" />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                    {captureData.length === 3 && <button className="primary-button-new" onClick={handlePredictions} disabled={loading}>Predict</button>}
+
+                </section>
+            </div>
         </>
     )
 }

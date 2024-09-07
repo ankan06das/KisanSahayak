@@ -12,6 +12,8 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import MarketPlace from "./pages/marketplace/Marketplace"
 import useGetPredictions from "./hooks/useGetPredictions";
 import { useEffect } from "react";
+import MarketplaceSell from "./pages/marketplace/MarketplaceSell";
+import MarketplaceBuy from "./pages/marketplace/MarketplaceBuy";
 
 function App() {
   const { authUser } = useAuthContext();
@@ -35,6 +37,8 @@ function App() {
           <Route path="/upload" element={authUser ? <Upload /> : <Navigate to={"/login"} />} />
           {/* <Route path="/marketplace" element={authUser ? <MarketPlace /> : <Navigate to={"/login"} />} /> */}
           <Route path="/marketplace" element={<MarketPlace/>} />
+          <Route path="/marketplace/sell" element={<MarketplaceSell/>} />
+          <Route path="/marketplace/buy" element={<MarketplaceBuy/>} />
           <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/login"} />} />
         </Routes>
 
