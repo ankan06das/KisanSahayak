@@ -35,9 +35,9 @@ const Home = () => {
   const user = useSelector(selectUser);
   console.log(user);
   const handleVoice = () => {
-    Speech.speak("भाईयों और बहनो, अच्छे दिन आ गए", {
+    Speech.speak("कार्यक्रम में उपस्थित चीफ जस्टिस ऑफ इंडिया डी वाई चंद्रचूड़ जी, जस्टिस श्री संजीव खन्ना जी, जस्टिस बी आर गवई जी, देश के कानून मंत्री अर्जुनराम मेघवाल जी, अटॉर्नी जनरल आर वेंकट रमानी जी, सुप्रीम कोर्ट बार काउंसिल के अध्यक्ष श्रीमान कपिल सिब्बल जी, बार काउंसिल ऑफ इंडिया के अध्यक्ष भाई मनन कुमार मिश्रा जी, सुप्रीम कोर्ट के सभी judges, हाईकोर्ट्स के Chief Justices, district judges, अन्य महानुभाव, देवियों एवं सज्जनों!", {
       language: "hi-IN",
-      pitch: 0.005,
+      pitch: 0.05,
       volume: 10
     });
   }
@@ -217,7 +217,7 @@ const Home = () => {
           </View>
         </TouchableOpacity>
         {img && <TouchableOpacity
-        onPress={handlePredict} style={tw`mb-2`}>
+        onPress={handleVoice} style={tw`mb-2`}>
           <View style={tw`h-15 w-70 bg-blue-500 shadow-md self-center`}>
             <Text style={tw`text-xl text-white m-auto`}>
               Predict
