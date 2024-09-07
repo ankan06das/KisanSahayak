@@ -11,6 +11,29 @@
   display: none !important;
 }
 
+.goog-te-gadget-simple{
+  display: flex;
+  border-radius: 5px;
+  background-color: #da9f48;
+  color: #000000;
+}
+
+.skiptranslate goog-te-gadget{
+  width: auto;
+}
+
+.VIpgJd-ZVi9od-xl07Ob-lTBxed{
+  display: flex;
+}
+
+.goog-te-gadget-icon{
+  display: none;
+}
+
+.VIpgJd-ZVi9od-xl07Ob-lTBxed{
+  font-family: "Poppins";
+}
+
 body {
   top: 0px !important;
 }

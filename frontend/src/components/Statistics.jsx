@@ -1,4 +1,10 @@
-import ProfilePic from "../assets/john-doe-image.png";
+import Stat1 from "../assets/Stat1.jpg";
+import Stat2 from "../assets/Stat2.jpg";
+import Stat3 from "../assets/Stat3.jpg";
+import Stat4 from "../assets/Stat4.jpg";
+import Stat5 from "../assets/Stat5.jpg";
+import Stat6 from "../assets/Stat6.jpg";
+import Stat7 from "../assets/Stat7.jpg";
 import { AiFillStar } from "react-icons/ai";
 import { useEffect } from "react";
 import AOS from "aos";
@@ -38,92 +44,20 @@ const Testimonial = () => {
 
   const TestimonialData = [
     {
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe1"
-    },
-    {
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe2"
-    },
-    {
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe3"
+      image: Stat1
     },{
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe4"
+      image: Stat2
     },{
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe5"
+      image: Stat3
     },{
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe6"
+      image: Stat4
     },{
-      image: ProfilePic,
-      review: "Lorem ipsum dolor sit amet consectetur. ",
-      stars: 
-      <>
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-      </>,
-      name: "John Doe7"
-    },
+      image: Stat5
+    },{
+      image: Stat6
+    },{
+      image: Stat7
+    }
   ];
 
   const settings = {
@@ -158,15 +92,15 @@ const Testimonial = () => {
   return (
     <div className="work-section-wrapper" data-aos="fade-up" id="testimonial-id">
       <div className="work-section-top">
-        <h1 className="primary-heading">PAST STATISTICS</h1>
+        <h1 className="primary-heading">STATISTICS</h1>
         <p className="primary-text">
-          Here's your past activities
+          Here's some statistics that could help you
         </p>
       </div>
       <Slider {...settings}>
       {TestimonialData.map((data, _idx) => (
           <div className="testimonial-section-bottom" key={_idx}>
-            <img src={data.image} alt={_idx} />
+            <img src={data.image} alt={_idx} style={{width:"700px", height:"300px"}}/>
             <p>{data.review}</p>
             <div className="testimonials-stars-container">
               {data.stars}
@@ -175,19 +109,6 @@ const Testimonial = () => {
           </div>
         ))}
         </Slider>
-        {/*<img src={ProfilePic} alt="" />
-        <p>
-          Lorem ipsum dolor sit amet consectetur. Non tincidunt magna non et
-          elit. Dolor turpis molestie dui magnis facilisis at fringilla quam.
-        </p>
-        <div className="testimonials-stars-container">
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-        </div>
-        <h2>John Doe</h2>*/}
     </div>
   );
 };

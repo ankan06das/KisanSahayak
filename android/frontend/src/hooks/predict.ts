@@ -1,20 +1,19 @@
-import { useState } from "react"
+import { useState } from "react";
 import { fetchWeatherInfo } from "../utils/getLocationAndWeatherData";
-import { useAuthContext } from "../context/AuthContext";
 import { getTempAndHum } from "../utils/getTempAndHum";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../slices/userSlice";
 
-const useGetPredictions = () => {
+const Predict = () => {
+    const user = useSelector(selectUser);
     const [loading, setLoading] = useState(false);
-    const apiUrl = import.meta.env.VITE_API_URL;jzx
-    const { authUser } = useAuthContext();
-
     const getPredictions = async (url) => {
         setLoading(true);
         try {
             const data = await fetchWeatherInfo();
             const tempAndHum = await getTempAndHum();
             const fetchData = {
-                userId: authUser.user._id,
+                userId: user._id,
                 url: url,
                 location: data.District,
                 rainAct: data.ACTUAL,
@@ -28,7 +27,7 @@ const useGetPredictions = () => {
                 hum: tempAndHum.avgHum
             }
 
-            const predictions = await fetch(`${apiUrl}/predictions/upload`, {
+            const predictions = await fetch("http://192.168.228.212/home", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -38,8 +37,8 @@ const useGetPredictions = () => {
             const predictedData = await predictions.json();
 
             return predictedData;
-        } catch (error) {
-            console.log(error.message);
+        } catch (err) {
+            console.log(err);
         } finally {
             setLoading(false);
         }
@@ -47,4 +46,4 @@ const useGetPredictions = () => {
     return { loading, getPredictions };
 }
 
-export default useGetPredictions;
+export default Predict;
