@@ -17,16 +17,16 @@ const Camera = () => {
     const [data, setData] = useState(null);
 
     const [imgUrl, setImgUrl] = useState(null);
-    const [captureData,setCaptureData] = useState([]);
+    const [captureData, setCaptureData] = useState([]);
 
-    const handleImageUpload=(imgUrl)=>{
-        captureData.push({url:imgUrl});
+    const handleImageUpload = (imgUrl) => {
+        captureData.push({ url: imgUrl });
         console.log(captureData);
     }
 
-    const LoadPredictButton = ()=>{
-        if(captureData.length == 3){
-            return <PredictionsButton/>;
+    const LoadPredictButton = () => {
+        if (captureData.length == 3) {
+            return <PredictionsButton />;
         }
     }
 
@@ -41,7 +41,7 @@ const Camera = () => {
         console.dir({ publicUrl });
         //capture();
 
-        handleImageUpload(publicUrl);        
+        handleImageUpload(publicUrl);
     }, [webcamRef]);
 
     const onUserMedia = (e) => {
@@ -55,7 +55,7 @@ const Camera = () => {
 
     return (
         <>
-            <div className="upload-body" style={{ display: "flex", flexDirection: "column"}}>
+            <div className="upload-body" style={{ display: "flex", flexDirection: "column" }}>
                 <Webcam
                     ref={webcamRef}
                     audio={false}
@@ -63,7 +63,21 @@ const Camera = () => {
                     videoConstraints={videoConstraints}
                     onUserMedia={onUserMedia}
                     mirrored={true}
+                    style={{ position: 'relative', zIndex: 1 }}
                 />
+                <div style={{
+                    position: 'absolute',
+                    top: '10%',
+                    left: '10%',
+                    right: '10%',
+                    bottom: '10%',
+                    zIndex: 2,
+                    border: '2px dashed green',
+                    borderRadius: '10px'
+                }}
+                >
+                    <p className="text-center text-green-700">Align the plant within ythe box</p>
+                </div>
                 <br />
                 <div>
                     <button onClick={capturePhoto} disabled={uploading} className="primary-button-new">
@@ -83,22 +97,22 @@ const Camera = () => {
                         </div>
                     )}
                 </div>*/}
-                    <section >
-                        {captureData.map((data, _idx)=>(
-                            <div className="uploaded-row" key={_idx}>
-                                <div className="content">
-                                        {url && (
-                                            <div>
-                                                <p>{data.url}</p>
-                                                <img src={data.url} alt="Screenshot" />
-                                            </div>
-                                        )}
-                                </div>
+                <section >
+                    {captureData.map((data, _idx) => (
+                        <div className="uploaded-row" key={_idx}>
+                            <div className="content">
+                                {url && (
+                                    <div>
+                                        <p>{data.url}</p>
+                                        <img src={data.url} alt="Screenshot" />
+                                    </div>
+                                )}
                             </div>
-                        ))}
-                        {captureData.length === 3 && <button className="primary-button-new" onClick={handlePredictions} disabled={loading}>Predict</button>}
-                        
-                    </section>
+                        </div>
+                    ))}
+                    {captureData.length === 3 && <button className="primary-button-new" onClick={handlePredictions} disabled={loading}>Predict</button>}
+
+                </section>
             </div>
         </>
     )
