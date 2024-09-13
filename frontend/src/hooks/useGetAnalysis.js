@@ -29,6 +29,7 @@ const useGetAnalysis = () => {
                 body: JSON.stringify(fetchData)
             });
             const res = await data.json();
+            return res;
         } catch (error) {
             console.log(error.message);
         } finally {
@@ -37,3 +38,5 @@ const useGetAnalysis = () => {
     }
     return { loading, analysis }
 }
+
+export default useGetAnalysis;
