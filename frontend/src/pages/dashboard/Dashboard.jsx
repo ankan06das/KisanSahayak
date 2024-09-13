@@ -14,7 +14,6 @@ const Dashboard = () => {
                 if (data) {
                     setWeatherData(data);
                 }
-                test();
             } catch (error) {
                 console.error("Failed to fetch weather data:", error);
             }

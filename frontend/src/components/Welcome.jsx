@@ -1,4 +1,3 @@
-import React from "react";
 import BannerImage from "../Assets/party-plants.gif";
 import Typewriter from 'typewriter-effect';
 import getSalutation from "../utils/getSalutation";
@@ -6,7 +5,7 @@ import { useAuthContext } from "../context/AuthContext";
 
 const Welcome = () => {
   const salutation = getSalutation();
-  const {authUser} = useAuthContext();
+  const { authUser } = useAuthContext();
 
   return (
     <div className="home-container">
@@ -29,7 +28,7 @@ const Welcome = () => {
             />
           </h1>
           <p className="primary-text">
-            WELCOME, {authUser?.user.name}
+            WELCOME, {authUser?.name}
           </p>
         </div>
         <div className="home-image-section">
