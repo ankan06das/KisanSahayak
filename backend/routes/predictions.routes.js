@@ -5,6 +5,6 @@ import verifyToken from "../middleware/protectRoute.js";
 
 const router = express.Router();
 
-router.post("/upload", verifyToken, uploadAndPredict);
+router.post("/upload", uploadAndPredict);
 
 export default router;

@@ -14,7 +14,7 @@ const useGetPredictions = () => {
             const data = await fetchWeatherInfo();
             const tempAndHum = await getTempAndHum();
             const fetchData = {
-                userId: authUser.user._id,
+                userId: authUser._id,
                 url: url,
                 location: data.District,
                 rainAct: data.ACTUAL,
