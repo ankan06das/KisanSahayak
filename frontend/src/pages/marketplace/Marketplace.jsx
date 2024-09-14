@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Typography, Box, Grid, InputBase, IconButton, Button } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-import { useDispatch } from 'react-redux'
+//import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./market.css";
-import { setProductData } from '../../state/reducer';
+//import { setProductData } from '../../state/reducer';
 import useGetItems from '../../hooks/useGetItems';
+import ItemCard from '../../components/ItemCard';
 
 const FoodGalleryPage = () => {
 	const { loading, items } = useGetItems();
 	const [products, setProducts] = useState([]);
-	const dispatch = useDispatch();
+	//const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [search, setSearch] = useState("");
 
@@ -60,12 +61,12 @@ const FoodGalleryPage = () => {
 					}}
 					placeholder='Search for farm equipments'
 					value={search}
-					onChange={(e) => {setSearch(e.target.value)}}
+					onChange={(e) => { setSearch(e.target.value) }}
 				/>
 				<IconButton>
 					<SearchIcon />
 				</IconButton>
-				<Button variant="contained" onClick={() => navigate("sell")} sx={{
+				<Button variant="contained" onClick={() => navigate(`/marketplace/sell`)} sx={{
 					height: "40px",
 					margin: "0.5rem",
 					color: "#000",
@@ -83,46 +84,7 @@ const FoodGalleryPage = () => {
 				<Box m={5} p={4} marginTop={2} data-aos="fade-up" display="flex" width="90%">
 					<Grid container spacing={5}>
 						{filteredProducts.map((item, index) => (
-							<Grid item xs={4} key={index}>
-								<Box
-									color="black"
-									onClick={() => {
-										navigate(`/marketplace/buy/${item._id}`)
-									}}
-									height={500}
-									bgcolor="rgb(255,255,255)"
-									borderRadius={3}
-									boxShadow="5px 10px 12px 1px black"
-									className="itemcard"
-									style={{ cursor: "pointer" }}
-								>
-									<img width="100%" src={item.image_url} alt={item.product_name} />
-									<Box
-										width="90%"
-										display="flex"
-										justifyContent="space-between"
-										marginLeft={1}
-										color="black"
-										style={{ textShadow: "0px 0px 10px white" }}
-									>
-										<Typography variant="h5" fontWeight="200" display="flex" flexDirection="column">
-											{item.product_name}
-											<Typography style={{ fontSize: "0.7rem", marginBottom: "1rem" }} display="flex" flexDirection="row">
-												<Typography m={0.2} style={{ fontWeight: "100" }} marginRight={1} variant="h7">
-													<p>
-														<span>{item.seller_name} | </span>
-														<span>{item.seller_type} | </span>
-														<span>{item.updatedAt}</span>
-													</p>
-												</Typography>
-												<Typography>
-													₹{item.price}
-												</Typography>
-											</Typography>
-										</Typography>
-									</Box>
-								</Box>
-							</Grid>
+							<ItemCard item={item} key={index} />
 						))}
 					</Grid>
 				</Box>

@@ -16,16 +16,16 @@ import { useEffect } from "react";
 
 function App() {
   const { authUser } = useAuthContext();
-  console.log(authUser?._id);
+  console.log(authUser);
 
-  const get = async() => {
+  const get = async () => {
     const data = await fetchWeatherInfo();
     console.log(data);
   }
 
   useEffect(() => {
     get();
-  },[])
+  }, [])
 
   return (
     <>
@@ -40,11 +40,10 @@ function App() {
           <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/"} />} />
           <Route path="/capture" element={authUser ? <Capture /> : <Navigate to={"/"} />} />
           <Route path="/upload" element={authUser ? <Upload /> : <Navigate to={"/"} />} />
-          {/* <Route path="/marketplace" element={authUser ? <MarketPlace /> : <Navigate to={"/login"} />} /> */}
-          <Route path="/marketplace" element={<MarketPlace/>} />
-          <Route path="/marketplace/sell" element={<MarketplaceSell/>} />
-          <Route path="/marketplace/buy/:id" element={<MarketplaceBuy/>} />
           <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace" element={authUser ? <MarketPlace /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace/sell" element={authUser ? <MarketplaceSell /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace/buy/:id" element={authUser ? <MarketplaceBuy /> : <Navigate to={"/"} />} />
         </Routes>
 
         <Toaster />

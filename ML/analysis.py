@@ -2,8 +2,8 @@ import numpy as np
 import pickle
 
 
-with open("./crop_prediction_model.pkl", 'rb') as file:
-    clf_crops = pickle.load(file)
+f = open("./crop_prediction_model.pkl", 'rb')
+clf_crops = pickle.load(f)
 
 f = open("./disease_prediction_model.pkl", 'rb')
 clf_disease = pickle.load(f)
