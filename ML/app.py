@@ -7,12 +7,21 @@ import analysis as al
 import json
 
 class Image(BaseModel):
-    # userId: str
+    userId: str
     url: list
     location: str
     rainAct: float
     rainNorm: float
     rainDep: float
+    soil_N: float
+    soil_P: float
+    soil_K: float
+    soil_pH: float
+    temp: float
+    hum: float
+
+class Analysis(BaseModel):
+    rain: float
     soil_N: float
     soil_P: float
     soil_K: float
@@ -63,9 +72,9 @@ async def getPrediction (req: Image):
     }
 
 @app.post('/analysis')
-async def getAnalysis(req: Image):
+async def getAnalysis(req: Analysis):
     return al.predict_and_save_to_json(
-        req.rainNorm,
+        req.rain,
         req.soil_N,
         req.soil_P,
         req.soil_K,

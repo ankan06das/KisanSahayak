@@ -41,7 +41,7 @@ export const uploadAndPredict = async (req, res) => {
 
     const newPrediction = new Prediction({
       userId,
-      url,
+      url: data.url,
       location,
       crop: data.crop,
       rainAct,
