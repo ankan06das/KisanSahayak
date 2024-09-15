@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import axios from "axios"
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import useGetItemById from '../../hooks/useGetItemById';
 
 const MarketplaceBuy = () => {
-	const prodData = useSelector((state) => state.productData);
+	//const prodData = useSelector((state) => state.productData);
 	const priceBreakdown = [];
 	const [prodInfo, setProdInfo] = useState(null);
 	//priceBreakdown.push({ "totalPrice": prodData.price });
@@ -15,10 +15,10 @@ const MarketplaceBuy = () => {
 
 	//console.log(priceBreakdown);
 
-	async function getWikiResponse(url, config) {
+	/*async function getWikiResponse(url, config) {
 		const res = await axios.get(url, config);
 		return res;
-	};
+	};*/
 
 	const handlePay = () => {
 		try {
