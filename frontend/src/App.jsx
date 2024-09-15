@@ -7,21 +7,26 @@ import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext";
 import Upload from "./pages/upload/Upload";
 import Capture from "./pages/upload/Capture";
-//import fetchWeatherInfo from "./utils/getLocationAndWeatherData";
 import Dashboard from "./pages/dashboard/Dashboard";
 import MarketPlace from "./pages/marketplace/Marketplace"
-import useGetPredictions from "./hooks/useGetPredictions";
-import { useEffect } from "react";
 import MarketplaceSell from "./pages/marketplace/MarketplaceSell";
 import MarketplaceBuy from "./pages/marketplace/MarketplaceBuy";
+import { fetchWeatherInfo } from "./utils/getLocationAndWeatherData";
+import { useEffect } from "react";
 
 function App() {
   const { authUser } = useAuthContext();
   console.log(authUser);
-  const {loading , getPredictions} = useGetPredictions();
+
+  const get = async () => {
+    const data = await fetchWeatherInfo();
+    console.log(data);
+  }
+
   useEffect(() => {
-    getPredictions();
-  }, []);
+    get();
+  }, [])
+
   return (
     <>
       <div>
@@ -33,13 +38,12 @@ function App() {
           <Route path="/capture" element={authUser ? <Capture /> : <Navigate to={"/"} />} />
           <Route path="/upload" element={authUser ? <Upload /> : <Navigate to={"/"} />} />
           <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/"} />} />
-          <Route path="/capture" element={authUser ? <Capture /> : <Navigate to={"/login"} />} />
-          <Route path="/upload" element={authUser ? <Upload /> : <Navigate to={"/login"} />} />
-          {/* <Route path="/marketplace" element={authUser ? <MarketPlace /> : <Navigate to={"/login"} />} /> */}
-          <Route path="/marketplace" element={<MarketPlace/>} />
-          <Route path="/marketplace/sell" element={<MarketplaceSell/>} />
-          <Route path="/marketplace/buy" element={<MarketplaceBuy/>} />
-          <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/login"} />} />
+          <Route path="/capture" element={authUser ? <Capture /> : <Navigate to={"/"} />} />
+          <Route path="/upload" element={authUser ? <Upload /> : <Navigate to={"/"} />} />
+          <Route path="/dashboard" element={authUser ? <Dashboard /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace" element={authUser ? <MarketPlace /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace/sell" element={authUser ? <MarketplaceSell /> : <Navigate to={"/"} />} />
+          <Route path="/marketplace/buy/:id" element={authUser ? <MarketplaceBuy /> : <Navigate to={"/"} />} />
         </Routes>
 
         <Toaster />

@@ -36,8 +36,8 @@ export const sellItem = async (req, res) => {
 
 export const getAllItems = async (req, res) => {
     try {
-        const loggedInUser = req.user._id;
-        const products = await Product.find({ _id: { $ne: loggedInUser } });
+        const loggedInUser = req.params.id;
+        const products = await Product.find({ seller: { $ne: loggedInUser } });
 
         res.status(200).json(products);
     } catch (err) {
@@ -45,6 +45,7 @@ export const getAllItems = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
 export const getItemById = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);

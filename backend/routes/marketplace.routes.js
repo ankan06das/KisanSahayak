@@ -4,9 +4,9 @@ import { buyItem, getAllItems, getItemById, sellItem } from "../controllers/mark
 
 const router = express.Router();
 
-router.post("/sell", verifyToken, sellItem);
-router.get("/explore", verifyToken, getAllItems);
-router.get("/:id", verifyToken, getItemById);
-router.delete("/buy", verifyToken, buyItem);
+router.post("/sell", sellItem);
+router.get("/explore/:id", getAllItems);
+router.get("/:id", getItemById);
+router.delete("/buy", buyItem);
 
 export default router;

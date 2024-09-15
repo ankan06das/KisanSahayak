@@ -12,13 +12,13 @@ import {
 // Register components to Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const RainfallChart = () => {
+const RainfallChart = (weatherData) => {
     const data = {
-        labels: ['January', 'February', 'March', 'April', 'May'], // X-axis labels
+        labels: ['Actual Rainfall', 'Normal Rainfall', '% DEP'], // X-axis labels
         datasets: [
             {
-                label: 'Rainfall (mm)',
-                data: [50, 70, 40, 100, 80], // Y-axis values
+                label: 'Rainfall (mm)', //lol
+                data: [weatherData.data.ACTUAL, weatherData.data.NORMAL, weatherData.data.DEP], // Y-axis values
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
                 borderColor: 'rgba(75, 192, 192, 1)', // Border color
                 borderWidth: 1,

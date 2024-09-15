@@ -5,7 +5,7 @@ const useGetItemById = () => {
     const [loading, setLoading] = useState();
     const apiUrl = import.meta.env.VITE_API_URL;
 
-    const item = async (id) => {
+    const product = async (id) => {
         setLoading(true);
         try {
             const res = await fetch(`${apiUrl}/marketplace/${id}`, {
@@ -27,7 +27,7 @@ const useGetItemById = () => {
             setLoading(false);
         }
     }
-    return { loading, item }
+    return { loading, product }
 }
 
 export default useGetItemById;

@@ -46,10 +46,17 @@ export const register = async (req, res) => {
         })
 
         if (newUser) {
-            console.log(newUser);
+            await newUser.save();
             generateTokenAndSetCookie(newUser._id, res);
-            const savedUser = await newUser.save();
-            res.status(201).json(savedUser);
+
+            res.status(201).json({
+                _id: newUser._id,
+                name: newUser.name,
+                gender: newUser.gender,
+                dob: newUser.dob,
+                phoneno: newUser.phoneno,
+                crops: newUser.crops
+            });
         } else {
             res.status(400).json({ error: "Invalid user data" });
         }
@@ -61,24 +68,30 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        console.log(req.body);
-        
         const { phoneno, password } = req.body;
-        
-        const user = await User.findOne({ phoneno: phoneno });
-        console.log(user);
-        if (!user) return res.status(400).send({ msg: "User does not exist." });
+        const user = await User.findOne({ phoneno });
+        if (!user) {
+            return res.status(400).json({ error: "Cannot find User" });
+        }
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
+        const isPaswordCorrect = await bcrypt.compare(password, user.password || "");
+        if (!isPaswordCorrect) {
+            return res.status(400).json({ error: "Invalid Login Credentials" });
+        }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        delete user.password;
-        console.log(user);
-        
-        res.status(200).json({ token, user });
+        res.cookie("jwt", "", { maxAge: 0 });
+        generateTokenAndSetCookie(user._id, res);
 
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            gender: user.gender,
+            dob: user.dob,
+            phoneno: user.phoneno,
+            crops: user.crops
+        });
     } catch (err) {
+        console.log("Error in Logging in", err.message);
         res.status(500).json({ error: err.message });
     }
 }

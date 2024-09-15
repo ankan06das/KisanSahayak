@@ -1,116 +1,136 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import './Upload.css';
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import { uploadBlobToCloudinary } from "../../utils/uploadBlobToCloudinary.js";
 import useGetPredictions from "../../hooks/useGetPredictions.js";
 import Predictions from "../../components/Predictions.jsx";
+import toast from "react-hot-toast";
+import Spinner from "../../components/Spinner";
 
 function Uploader() {
-    const [image, setImage] = useState(null);
-    const [fileName, setFileName] = useState("No selected file");
-    const [blobData, setBlobData] = useState([]);
-    const [uploadData, setUploadData] = useState([]);
-    const [uploading, setUploading] = useState(false);
-    const { loading, getPredictions } = useGetPredictions();
-    const [data, setData] = useState();
+	const inputRef = useRef(null);
+	const [images, setImages] = useState([]); // To store blob URLs
+	const [uploadData, setUploadData] = useState([]); // To store Cloudinary URLs
+	const [uploading, setUploading] = useState(false);
+	const [predicting, setPredicting] = useState(false);
+	const [predictedData, setPredictedDta] = useState(null);
+	const { getPredictions } = useGetPredictions();
 
-    const handleImageUpload = (filename, img) => {
-        setUploadData(prevData => [
-            ...prevData,
-            { name: filename, image: img }
-        ]);
-        setBlobData(prevData => [
-            ...prevData,
-            { name: filename, image: img }
-        ]);
-        console.log(blobData);
-    };
+	const handleImageUpload = () => {
+		inputRef.current?.click();
+	};
 
-    const handleBatchUpload = async () => {
-        setUploading(true);
-        try {
-            const uploadPromises = uploadData.map(async ({ name, image }) => {
-                // Use the uploadToCloudinary function to upload each image
-                const imageUrl = await uploadBlobToCloudinary(URL.createObjectURL(image));
-                return { name, image: imageUrl }; // Return image data with the Cloudinary URL
-            });
-            const results = await Promise.all(uploadPromises);
+	const handleImageChange = (e) => {
+		const file = e.target.files?.[0];
+		if (file) {
+			const img = URL.createObjectURL(file);
 
-            // Filter out null results in case of errors during upload
-            const successfulUploads = results.filter(result => result !== null);
-            console.log("Successful uploads: ", successfulUploads);
+			setImages((prevImages) => [...prevImages, img]);
+		}
+	};
 
-            // Optionally update state with successful uploads
-            setUploadData(successfulUploads);
-        } catch (error) {
-            console.error("Error uploading batch: ", error);
-        } finally {
-            setUploading(false);
-        }
-    };
+	const handleUploadToCloudinary = async () => {
+		setUploading(true);
+		try {
+			const uploadPromises = images.map(async (imageBlob) => {
+				const cloudinaryUrl = await uploadBlobToCloudinary(imageBlob);
+				return cloudinaryUrl;
+			});
 
-    const handleDeletion = (data) => {
-        setUploadData(uploadData.filter(el => el !== data));
-    };
+			const cloudinaryUrls = await Promise.all(uploadPromises);
+			setUploadData((prevData) => [...prevData, ...cloudinaryUrls]);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.log("Error in uploading image", error.message);
+				toast.error(error.message);
+			} else {
+				console.log("An unknown error occurred");
+			}
+		} finally {
+			setUploading(false);
+		}
+	};
 
-    const handlePredictions = async () => {
-        const predData = await getPredictions(url);
-        setData(predData);
-    }
+	const handleDeletion = (data) => {
+		setImages(images.filter((img) => img !== data));
+		setUploadData(uploadData.filter((url) => url !== data));
+	};
 
-    return (
-        <main className="upload-body">
-            <form className="upload-form" action=""
-                onClick={() => document.querySelector(".input-field").click()}
-            >
-                <input
-                    type="file"
-                    accept="image/*"
-                    className="input-field"
-                    hidden
-                    onChange={({ target: { files } }) => {
-                        if (files && files[0]) {
-                            setFileName(files[0].name);
-                            setImage(URL.createObjectURL(files[0]));
+	const handlePredictions = async () => {
+		try {
+			setPredicting(true);
+			const predData = await getPredictions(uploadData);
+			setPredictedDta(predData);
+		} catch (error) {
+			toast.error(error.message);
+		} finally {
+			setPredicting(false);
+		}
+	};
 
-                            handleImageUpload(files[0].name, files[0]);
-                        }
-                    }}
-                />
-                <>
-                    <MdCloudUpload color="#1475cf" size={60} />
-                    <p>Browse Files to Upload</p>
-                </>
-            </form>
-            <section>
-                {uploadData.map((data) => (
-                    <div className="uploaded-row" key={data.name}>
-                        <div className="content">
-                            <span>
-                                <MdDelete onClick={() => handleDeletion(data)} />
-                            </span>
-                        </div>
-                        <img src={data.image} width={150} height={150} alt={data.name} />
-                    </div>
-                ))}
-                {uploadData.length === 3 && <button onClick={handleBatchUpload} disabled={uploading} className="primary-button-new">
-                    {uploading ? "Uploading..." : "Upload"}
-                </button>}
-                {uploadData.length === 3 &&
-                    <button
-                        className="primary-button-new"
-                        onClick={handlePredictions}
-                        disabled={loading}
-                    >
-                        Predict
-                    </button>
-                }
-            </section>
-            <div>
-                {data && <Predictions data={data} />}
-            </div>
-        </main>
-    );
+	console.log("Images:", images);
+	console.log("Upload Data:", uploadData);
+	console.log(predictedData);
+
+	return (
+		<main className="upload-body">
+			<div className="w-1/2 h-full flex flex-col items-center justify-center p-10">
+				<div
+					onClick={handleImageUpload}
+					className="w-full h-auto flex items-center justify-center cursor-pointer border-2 border-dashed border-blue-600 p-4"
+				>
+					<div className="flex flex-col items-center gap-2">
+						<MdCloudUpload className="h-[250px] w-[350px]" />
+						<span className="text-gray-700">No files chosen</span>
+					</div>
+
+					<input
+						type="file"
+						accept="image/*"
+						ref={inputRef}
+						className="hidden"
+						onChange={handleImageChange}
+					/>
+				</div>
+			</div>
+			<section>
+				{images.map((image, idx) => (
+					<div className="uploaded-row" key={idx}>
+						<div className="content">
+							<span>
+								<MdDelete onClick={() => handleDeletion(image)} />
+							</span>
+						</div>
+						<img src={image} width={150} height={150} alt="image" />
+					</div>
+				))}
+
+				{images.length === 3 && uploadData.length === 0 && (
+					<button
+						onClick={handleUploadToCloudinary}
+						disabled={uploading}
+						className="primary-button-new"
+					>
+						{uploading ? <Spinner /> : "Upload"}
+					</button>
+				)}
+
+				{uploadData.length === 3 && !predictedData && (
+					<button
+						className="primary-button-new"
+						onClick={handlePredictions}
+						disabled={predicting}
+					>
+						{predicting ? <Spinner /> : "Predict"}
+					</button>
+				)}
+			</section>
+			
+			<div>
+				{predictedData && <Predictions data={predictedData} />}
+			</div>
+		</main>
+	);
 }
 
 export default Uploader;
